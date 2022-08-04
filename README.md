@@ -1,1 +1,1 @@
-# plutoniumi am akash mishra
+# plutoniumi am akash mishrai am master of myself

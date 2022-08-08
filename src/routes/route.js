@@ -1,4 +1,6 @@
 const express = require('express');
+const f=require('lodash');
+const u=require('underscore')
 const abc = require('../introduction/intro')
 const a=require('../util/helper')
 const router = express.Router();
@@ -21,6 +23,16 @@ router.get('/test-me', function (req, res) {
     abcd.L()
     console.log("after converting into upper-case:-")
     abcd.U()
+    let array=['jan','feb','mar','apr','may','june','july','aug','sep','oct','nov','dec']
+    let updated=f.chunk(array,3);
+    console.log(updated);
+    let odd=[1,3,5,7,9,11,13,15,17,19];
+    console.log(f.tail(odd))
+    let arr1=[1,2,2,1,3];
+    let arr2=[3,3,4,5,5];
+    let uni=f.union(arr1,arr2);
+    console.log(f.uniq(uni));
+    console.log(f.fromPairs([['horror','The Shining'],['drama','Titanic'],['thriller','Shutter Island'],['fantasy','Pans Labyrinth']]))
     res.send('My second ever api!')
 });
 

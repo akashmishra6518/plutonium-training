@@ -1,5 +1,37 @@
 const express = require('express');
 const router = express.Router();
+let players =
+   [
+       {
+           "name": "manish",
+           "dob": "1/1/1995",
+           "gender": "male",
+           "city": "jalandhar",
+           "sports": [
+               "swimming"
+           ]
+       },
+       {
+           "name": "gopal",
+           "dob": "1/09/1995",
+           "gender": "male",
+           "city": "delhi",
+           "sports": [
+               "soccer"
+           ],
+       },
+       {
+           "name": "lokesh",
+           "dob": "1/1/1990",
+           "gender": "male",
+           "city": "mumbai",
+           "sports": [
+               "soccer"
+           ],
+       },
+   ]
+
+
 
 router.get('/students/:name', function(req, res) {
     let studentName = req.params.name
@@ -68,6 +100,25 @@ router.post("/test-post-4", function(req, res) {
     let ele= req.body.element
     arr.push(ele)
     res.send(  { msg: arr , status: true }  )
+})
+
+router.post("/players",function(req,res){
+  
+    let flag=false;
+    for(let i=0;i<players.length;i++)
+    {
+        if(players[i].name==req.body.name)
+        {
+            flag=true;
+            break;
+        }
+    }
+    if(flag==true)
+        res.send("players are already added")
+    else{
+        players.push(req.body);
+        res.send(players);
+     }
 })
 
 module.exports = router;

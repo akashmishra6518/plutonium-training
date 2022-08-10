@@ -5,12 +5,13 @@ const underscore = require('underscore')
 const router = express.Router();
 
 router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
+     myHelper.printDate()
+     myHelper.getCurrentMonth()
     myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
+     let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
+     console.log('The first element received from underscope function is '+firstElement)
+     res.send('My first ever api!')
+    
 });
 
 router.get("/movies/:indexNumber", function(req, res){
@@ -101,6 +102,16 @@ router.get("/films/:filmId", function(req, res){
 
        //if there is no match give an error response
        res.send("The film id doesn't match any movie")
+})
+router.get("/missing/:index",function(req,res){
+    let m=JSON.parse(req.params.index)
+    let sum=0;
+    let total=(((m[m.length-1])*(m[m.length-1]+1))/2)-(((m[0]-1)*(m[0]))/2)
+    for(let i=0;i<m.length;i++)
+     {
+         sum+=m[i];
+     }
+     res.send('missing no is :- '+(total-sum))
 })
 
 module.exports = router;

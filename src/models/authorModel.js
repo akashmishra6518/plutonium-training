@@ -8,8 +8,7 @@ const AuthorSchema = new mongoose.Schema( {
     author_id:{
         type:Number,
         required:true,
-        unique: true,
-        index:true
+        unique: true
     },
     age:Number,
     address:{

@@ -1,5 +1,6 @@
 const UserModel= require("../models/bookModel")
 const Author=require("../models/authorModel")
+const _=require('underscore')
 const { getAllauthorName } = require("./authorController")
 
 const createBook=async function(req,res){
@@ -28,8 +29,9 @@ const Authore=async function(req,res){
 const FindPrice=async function(req,res){
 
     let list =await UserModel.find({price:{ $gte: 50, $lte: 100}}).select({author_id:1,_id:0})
-    let a=list.map(UserModel.getAllauthorName())
-    res.send({msg:"hii"})
+    const unique = [...new Set(list.map(item => item.author_id))]
+    let a=await Author.find({author_id:{$in:unique}}).select({author_name:1,_id:0})
+    res.send({msg:a})
     
 }
     

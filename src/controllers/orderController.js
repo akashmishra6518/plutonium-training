@@ -5,7 +5,6 @@ const ProductModel=require("../models/productModel")
 
 
 
-
 const createOrder= async function (req, res) {
 
 
@@ -22,11 +21,34 @@ const createOrder= async function (req, res) {
                     let p_id=req.body.productId
                     let data2=await ProductModel.findById(p_id)
                     if(data2){
-
+                        let result=req.headers.isfreeappuser
+                        if(result=="true"){
+                            let order=req.body
+                            order.amount=0
+                            order.isFreeAppUser=result
+                            let mainOrder=await OrderModel.create(order)
+                            res.send({msg:mainOrder})
+                        }else{
+                            let u=req.body.userId;
+                            let p=req.body.productId;
+                            let productprice=await ProductModel.findById(p).select({price:1,_id:0})
+                            let balance=await UserModel.findById(u).select({balance:1,_id:0})
+                            if(balance.balance<productprice.price)
+                                 res.send({msg:"User does not have enough balance"})
+                             else{
+                                 let order=req.body
+                                 order.amount=productprice.price
+                                 let u=req.body.userId;
+                                 let update=await UserModel.findByIdAndUpdate(u).update({ $inc: { balance: - productprice.price} })
+                                 order.isFreeAppUser=result
+                                 let mainOrder=await OrderModel.create(order)
+                                 res.send({msg:mainOrder})
+                             }
+                        }
                         
 
                     }else
-                        res.send({msg:"productId is must"}) 
+                        res.send({msg:"productId is not valid"}) 
                 }else
                     res.send({msg:"ProductId is must"})
             }else

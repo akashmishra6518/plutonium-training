@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema( {
         productId:{
             type:objectId
         },
-        amount: 0,
+        amount: Number,
         isFreeAppUser:Boolean,
         date:String
     

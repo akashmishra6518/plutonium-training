@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const Controller= require("../controllers/productController")
 const UserController= require("../controllers/userController")
-//const ProController=require("../controllers/productController")
-
+const ProController=require("../controllers/productController")
+const OrderController=require("../controllers/orderController")
 
 
 
@@ -12,9 +13,9 @@ router.get("/test-me", function (req, res) {
 })
 router.post("/createUser", UserController. createUser)
 router.get("/getUsersData", UserController.getUsersData)
-// router.post("/createProduct",ProController.createProduct)
-// router.get("/getProductList",ProController.showProductList)
-
+router.post("/createProduct",ProController.createProduct)
+router.get("/getProductList",ProController.showProductList)
+router.post("/createOrder",OrderController.createOrder)
 
 
 

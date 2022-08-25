@@ -10,4 +10,4 @@ const productSchema=new mongoose.Schema({
         } //mandatory property
 },{ timestamps: true });
 
-module.exports=mongoose.model("NewProduct","productSchema")
+module.exports=mongoose.model("NewProduct",productSchema)

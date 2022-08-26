@@ -60,4 +60,20 @@ const createOrder= async function (req, res) {
         res.send({msg:"require header is missing"})
 }
 
+// use of Middleware
+
+const createOrder1=async function (req,res){
+
+    if(req.value=="false")
+    {
+        let u=req.body.userId;
+        let update=await UserModel.findByIdAndUpdate(u).updateOne({ $set: { balance: req.total} })
+    }
+    let order=req.body
+    order.amount=req.update
+    order.isFreeAppUser=req.value
+    let createOrder=await OrderModel.create(order)
+    res.send({msg:order})
+}
 module.exports.createOrder= createOrder
+module.exports.createOrder1=createOrder1

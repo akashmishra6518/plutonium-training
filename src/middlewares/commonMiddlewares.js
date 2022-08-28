@@ -13,21 +13,19 @@ const mid1=function ( req, res, next) {
 
 const mid2= async function ( req, res, next) {
     if(req.body.userId){
-        let u_id=req.body.userId;
-        let data1=await UserModel.findById(u_id)
+        req.u_id=req.body.userId;
+        let data1=await UserModel.findById({_id:req.u_id})
         if(data1){
             if(req.body.productId){
-                let p_id=req.body.productId
-                let data2=await ProductModel.findById(p_id)
+                req.p_id=req.body.productId
+                let data2=await ProductModel.findById({_id:req.p_id})
                 if(data2){
                     if(req.akash=="true"){
                         req.update=0
                         next()
                     }else{
-                        let u=req.body.userId;
-                        let p=req.body.productId;
-                        let productprice=await ProductModel.findById(p).select({price:1,_id:0})
-                        let balance=await UserModel.findById(u).select({balance:1,_id:0})
+                        let productprice=await ProductModel.findById({_id:req.p_id}).select({price:1,_id:0})
+                        let balance=await UserModel.findById({_id:req.u_id}).select({balance:1,_id:0})
                         if(balance.balance<productprice.price)
                             res.send({msg:"User does not have enough balance"})
                         else{
@@ -38,12 +36,12 @@ const mid2= async function ( req, res, next) {
                         }
                     }else
                         res.send({msg:"productId is not valid"}) 
-                }else
-                    res.send({msg:"ProductId is must"})
             }else
-                res.send({msg:"user is not valid"})
+                res.send({msg:"ProductId is must"})
         }else
-            res.send({msg:"userId is must"})
+            res.send({msg:"user is not valid"})
+    }else
+        res.send({msg:"userId is must"})
 }
 
 module.exports.mid2= mid2

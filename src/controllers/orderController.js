@@ -2,45 +2,35 @@ const { count } = require("console")
 const OrderModel= require("../models/orderModel")
 const UserModel=require("../models/userModel")
 const ProductModel=require("../models/productModel")
-
-
+const {objectId}=require('mongodb')
 
 const createOrder= async function (req, res) {
-
-
     if(req.headers.isfreeappuser){
-
         if(req.body.userId){
-
-            let u_id=req.body.userId;
-            let data1=await UserModel.findById(u_id)
+            req.u_id=req.body.userId;
+            let data1=await UserModel.findById({_id:req.u_id})
             if(data1){
-
                 if(req.body.productId){
-
-                    let p_id=req.body.productId
-                    let data2=await ProductModel.findById(p_id)
+                    req.p_id=req.body.productId
+                    let data2=await ProductModel.findById({_id:req.p_id})
                     if(data2){
-                        let result=req.headers.isfreeappuser
-                        if(result=="true"){
+                        req.result=req.headers.isfreeappuser
+                        if(req.result=="true"){
                             let order=req.body
                             order.amount=0
-                            order.isFreeAppUser=result
+                            order.isFreeAppUser=req.result
                             let mainOrder=await OrderModel.create(order)
                             res.send({msg:mainOrder})
                         }else{
-                            let u=req.body.userId;
-                            let p=req.body.productId;
-                            let productprice=await ProductModel.findById(p).select({price:1,_id:0})
-                            let balance=await UserModel.findById(u).select({balance:1,_id:0})
+                            let productprice=await ProductModel.findById({_id:req.p_id}).select({price:1,_id:0})
+                            let balance=await UserModel.findById({_id:req.u_id}).select({balance:1,_id:0})
                             if(balance.balance<productprice.price)
                                  res.send({msg:"User does not have enough balance"})
                              else{
                                  let order=req.body
                                  order.amount=productprice.price
-                                 let u=req.body.userId;
-                                 let update=await UserModel.findByIdAndUpdate(u).update({ $inc: { balance: - productprice.price} })
-                                 order.isFreeAppUser=result
+                                 let update=await UserModel.findById({_id:req.u_id}).updateOne({ $inc: { balance: - productprice.price} })
+                                 order.isFreeAppUser=req.result
                                  let mainOrder=await OrderModel.create(order)
                                  res.send({msg:mainOrder})
                              }
@@ -64,14 +54,14 @@ const createOrder= async function (req, res) {
 
 const createOrder1=async function (req,res){
 
-    if(req.headers.akash=="false")
+    if(req.akash=="false")
     {
         let u=req.body.userId;
-        let update=await UserModel.findByIdAndUpdate(u).updateOne({ $set: { balance: req.total} })
+        let update=await UserModel.findById(u).updateOne({ $set: { balance: req.total} })
     }
     let order=req.body
     order.amount=req.update
-    order.isFreeAppUser=Boolean(req.headers.akash)
+    order.isFreeAppUser=Boolean(req.akash)
     let createOrder=await OrderModel.create(order)
     res.send({msg:order})
 }

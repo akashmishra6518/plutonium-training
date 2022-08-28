@@ -19,8 +19,8 @@ router.post("/createOrder",OrderController.createOrder)
 
 //Api call with the help of Middleware
 
-router.post("/createUser1", Middleware.mid1, UserController.createUser1)
-router.post("/createOrder1", Middleware.mid2, OrderController.createOrder1)
+router.post("/createUser1", Middleware.mid1,UserController.createUser1)
+router.post("/createOrder1",Middleware.mid1, Middleware.mid2, OrderController.createOrder1)
 
 
 

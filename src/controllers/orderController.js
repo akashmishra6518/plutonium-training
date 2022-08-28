@@ -64,14 +64,14 @@ const createOrder= async function (req, res) {
 
 const createOrder1=async function (req,res){
 
-    if(req.value=="false")
+    if(req.headers.akash=="false")
     {
         let u=req.body.userId;
         let update=await UserModel.findByIdAndUpdate(u).updateOne({ $set: { balance: req.total} })
     }
     let order=req.body
     order.amount=req.update
-    order.isFreeAppUser=req.value
+    order.isFreeAppUser=Boolean(req.headers.akash)
     let createOrder=await OrderModel.create(order)
     res.send({msg:order})
 }

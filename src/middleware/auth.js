@@ -1,12 +1,19 @@
-const authenticate = function(req, req, next) {
-    //check the token in request header
-    //validate this token
+const jwt=require('jsonwebtoken')
 
+const TAAT = function(req, res, next) {
+    let token=req.headers["x-auth-token"]
+    if(!token)
+        token=req.headers["x-Auth-token"]
+    if(!token)
+        return res.send({status:false,msg:"token is must"})
+    let decodedToken=jwt.verify(token,"akashisveryimpperson")
+    if(!decodedToken)
+        return res.send({status:false,msg:"token is not valid"})
+    let userLoggedIn=decodedToken.emailId
+    req.data=req.params.userId
+    if(userLoggedIn!=req.data)
+        return res.send({status:false,msh:"You are not Authorised"})
     next()
 }
 
-
-const authorise = function(req, res, next) {
-    // comapre the logged in user's id and the id in request
-    next()
-}
+module.exports.TAAT=TAAT

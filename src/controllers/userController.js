@@ -1,46 +1,34 @@
 const UserModel= require("../models/userModel")
-
-
-
-
-const basicCode= async function(req, res) {
-    let tokenDataInHeaders= req.headers.token
-    console.log(tokenDataInHeaders)
-
-    console.log( "HEADER DATA ABOVE")
-    console.log( "hey man, congrats you have reached the Handler")
-    res.send({ msg: "This is coming from controller (handler)"})
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const createUser= async function (req, res) {
-    let data= req.body
-    let savedData= await UserModel.create(data)
-    res.send({msg: savedData})
+    try{
+        let data=req.body
+        if(Object.keys(data).lenght!=0 && data.emailId && data.password){
+            let userdata=await UserModel.create(data)
+            res.status(201).send({msg:userdata})
+        }else
+            res.status(400).send({msg:"invalid request"})
+    }catch(error){
+        res.status(500).send({msg:error.message})
+    }
 }
-
-const getUsersData= async function (req, res) {
+const getdetail= async function (req, res) {
     let allUsers= await UserModel.find()
     res.send({msg: allUsers})
 }
-
+const loginUser= async function (req, res) {
+    let allUsers= await UserModel.find()
+    res.send({msg: allUsers})
+}
+const updateUser= async function (req, res) {
+    let allUsers= await UserModel.find()
+    res.send({msg: allUsers})
+}
+const deleteUser= async function (req, res) {
+    let allUsers= await UserModel.find()
+    res.send({msg: allUsers})
+}
 module.exports.createUser= createUser
-module.exports.getUsersData= getUsersData
-module.exports.basicCode= basicCode
+module.exports.getdetail= getdetail
+module.exports.loginUser= loginUser
+module.exports.updateUser=updateUser
+module.exports.deleteUser=deleteUser

@@ -1,31 +1,26 @@
 const mongoose = require('mongoose');
+const { createUser } = require('../controllers/userController');
 
 const userSchema = new mongoose.Schema( {
     firstName: String,
     lastName: String,
     mobile: {
-        type: String,
-        unique: true,
-        required: true
+        type: String
     },
-    emailId: String,
+    emailId:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    },
     gender: {
         type: String,
-        enum: ["male", "female", "LGBTQ"] //"falana" will give an error
+        enum: ["male", "female", "LGBTQ"] 
     },
-    age: Number,
-    // isIndian: Boolean,
-    // parentsInfo: {
-    //     motherName: String,
-    //     fatherName: String,
-    //     siblingName: String
-    // },
-    // cars: [ String  ]
+    age: Number
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', userSchema) //users
+module.exports = mongoose.model('Http_User', userSchema)
 
-
-
-// String, Number
-// Boolean, Object/json, array

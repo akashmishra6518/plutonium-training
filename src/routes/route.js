@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const UserModel= require("../models/userModel.js")
 const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
 const commonMW = require ("../middlewares/commonMiddlewares")
@@ -13,6 +12,11 @@ router.post("/createUser",UserController.createUser)
 router.post("/login",UserController.loginUser)
 router.get("/users/:userId",UserController.getdetail)
 router.post("/users/:userId",UserController.updateUser)
-router.delete("/users:/userId",UserController.deleteUser)
+router.delete("/users/:userId",UserController.deleteUser)
 
+// All the API with the help of middleware
+
+router.get("/users/:userId",commonMW.mid1, UserController.getdetail1)
+router.post("/users/:userId",commonMW.mid1, UserController.updateUser1)
+router.delete("/users/:userId",commonMW.mid1, UserController.deleteUser1)
 module.exports = router;

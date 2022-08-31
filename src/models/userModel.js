@@ -17,9 +17,13 @@ const userSchema = new mongoose.Schema( {
     },
     gender: {
         type: String,
-        enum: ["male", "female", "LGBTQ"] 
+        enum: ["male", "female", "others"] 
     },
-    age: Number
+    age: Number,
+    isdeleted:{
+        type:Boolean,
+        default:true
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Http_User', userSchema)
